@@ -43,6 +43,57 @@ public class RandomizadorDePessoaJuridica implements Irandomizador {
 		return listaFinal.get( random.nextInt( listaFinal.size() ) );
 	}
 
+	public String geraCNPJ() {
+
+		StringBuilder geradorDeCNPJ = new StringBuilder();
+		while( geradorDeCNPJ.length() < 12 ) {
+			geradorDeCNPJ.append( random.nextInt( 10 ) );
+		}
+
+		int digitoVerificador1 = 0;
+		int digitoCNPJ = 0;
+		int multiplicador = 5;
+		for( int i = 1; i <= geradorDeCNPJ.length(); i++ ) {
+			digitoCNPJ = Integer.parseInt( geradorDeCNPJ.substring( i - 1, i ) );
+			digitoVerificador1 = digitoVerificador1 + digitoCNPJ * multiplicador;
+
+			if( multiplicador == 2 ) {
+				multiplicador = 9;
+			} else {
+				multiplicador--;
+			}
+		}
+
+		int resto = ( digitoVerificador1 % 11 );
+		if( resto < 2 ) {
+			geradorDeCNPJ.append( 0 );
+		} else {
+			geradorDeCNPJ.append( 11 - resto );
+		}
+
+		int digitoVerificador2 = 0;
+		multiplicador = 6;
+		for( int i = 1; i < geradorDeCNPJ.length() + 1; i++ ) {
+			digitoCNPJ = Integer.parseInt( geradorDeCNPJ.substring( i - 1, i ) );
+			digitoVerificador2 = digitoVerificador2 + digitoCNPJ * multiplicador;
+
+			if( multiplicador == 2 ) {
+				multiplicador = 9;
+			} else {
+				multiplicador--;
+			}
+		}
+
+		resto = ( digitoVerificador2 % 11 );
+		if( resto < 2 ) {
+			geradorDeCNPJ.append( 0 );
+		} else {
+			geradorDeCNPJ.append( 11 - resto );
+		}
+
+		return geradorDeCNPJ.toString();
+	}
+	
 	public int geraCRM() {
 		return random.nextInt( 100000 );
 	}
